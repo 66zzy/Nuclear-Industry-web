@@ -9,11 +9,17 @@
             <label for="password">Password</label>
             <input type="password" id="password" name="password" required>
         </div>
-        <router-link to="/home">
-            <button>login</button>
+
+        <div class="form-group">
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" id="confirm-password" name="confirm-password" required>
+        </div>
+
+        <router-link to="/">
+            <button>register</button>
         </router-link>
         <div id="register-link">
-        Don't have an account yet? <a href="/register">Register</a>
+            Already have an account? <a href="/">Log in</a>
         </div>
     </div>
 </template>

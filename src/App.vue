@@ -2,13 +2,13 @@
     <div>
       <img src="./assets/bg.jpg" id="back">
     </div>
-    <header>
-      <h1  style="color: white;">核反应堆数字孪生可视化</h1>
-      <div class="show-time"  style="color: white;">{{ currentTime }}</div>
-    </header>
+  <div id="app">
     <router-link to="/home">    
-      <h1  style="color: white;">Home</h1>
+      <h1  style="color: white; position: absolute;left: 2vw;top: 1vh;">Home</h1>
     </router-link>
+    <h1  style="color: white; position: absolute;left: 50%; transform: translate(-50%);top:1vh">核反应堆数字孪生可视化</h1>
+    <div style="color: skyblue;font-size: large; position: absolute;right: 2vw;top: 2vh;">{{ currentTime }}</div>
+  </div>
   <router-view></router-view>
 </template>
 
@@ -57,5 +57,9 @@ export default {
     width: 100vw;
     height: 100vh;
     z-index: -1;
+}
+#app{
+  display: flex;
+  height: 10vh;
 }
 </style>
