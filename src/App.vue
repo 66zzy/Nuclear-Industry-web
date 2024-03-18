@@ -2,6 +2,9 @@
     <div>
       <img src="./assets/bg.jpg" id="back">
     </div>
+    <div>
+      <img src="./assets/head_bg.png"> 
+    </div>
   <div id="app">
     <router-link to="/home">    
       <h1  style="color: white; position: absolute;left: 2vw;top: 1vh;">Home</h1>
@@ -60,6 +63,5 @@ export default {
 }
 #app{
   display: flex;
-  height: 10vh;
 }
 </style>
