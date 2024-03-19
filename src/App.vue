@@ -1,18 +1,17 @@
 <template>
-    <div>
-      <img src="./assets/bg.jpg" id="back">
-    </div>
+    <div class="back">
     <div>
       <img src="./assets/head_bg.png"> 
     </div>
-  <div id="app">
-    <router-link to="/home">    
-      <h1  style="color: white; position: absolute;left: 2vw;top: 1vh;">Home</h1>
-    </router-link>
-    <h1  style="color: white; position: absolute;left: 50%; transform: translate(-50%);top:1vh">核反应堆数字孪生可视化</h1>
-    <div style="color: skyblue;font-size: large; position: absolute;right: 2vw;top: 2vh;">{{ currentTime }}</div>
+    <div style="display: flex;">
+      <router-link to="/home">    
+        <h1  style="color: white; position: absolute;left: 2vw;top: 1vh;">Home</h1>
+      </router-link>
+      <h1  style="color: white; position: absolute;left: 50%; transform: translate(-50%);top:1vh">核反应堆数字孪生可视化</h1>
+      <div style="color: skyblue;font-size: large; position: absolute;right: 2vw;top: 2vh;">{{ currentTime }}</div>
+    </div>
+    <router-view></router-view>
   </div>
-  <router-view></router-view>
 </template>
 
 <script>
@@ -55,13 +54,11 @@ export default {
 </script>
 
 <style scoped>
-#back{
-    position: absolute;
+.back{
+    background-image: url('./assets/bg.jpg');
     width: 100vw;
-    height: 100vh;
+    height: 100%; 
+    min-height: 100vh;
     z-index: -1;
-}
-#app{
-  display: flex;
 }
 </style>

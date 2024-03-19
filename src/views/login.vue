@@ -10,7 +10,7 @@
             <input type="password" id="password" name="password" required>
         </div>
         <router-link to="/home">
-            <button>login</button>
+            <el-button type="primary" size="large" style="margin-left: 2vw;font-size: medium;">login</el-button>
         </router-link>
         <div id="register-link">
         Don't have an account yet? <a href="/register">Register</a>
@@ -27,7 +27,6 @@
     border: 2px black solid;
     border-radius: 1vw;
     background-color: rgba(255, 255, 255, 0.7);
-    z-index: -1;
 }
 .form-group{
     width: 20vw;
@@ -41,21 +40,6 @@ input{
     border-radius: 0.5vw;
     opacity: 0.4;
     font-size:medium;
-}
-button{
-    width: 10vw;
-    height: 2.2vw;
-    padding: 8px;
-    border-radius: 4px;
-    background-color: #1da1f2;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    margin-left: 2vw;
-    font-size: medium;
-}
-button:hover{
-    background-color: #0d8bba;
 }
 #register-link{
     margin: 2vw;

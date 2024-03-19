@@ -13,14 +13,14 @@ const router = createRouter({
       component: () => import('../views/home.vue')
     },
     {
-      path: '/param',
-      name: 'param',
-      component: () => import('../views/param.vue')
+      path: '/field_to_param',
+      name: 'field_to_param',
+      component: () => import('../views/field_to_param.vue')
     },
     {
-      path: '/visual',
-      name: 'visual',
-      component: () => import('../views/visual.vue')
+      path: '/param_to_field',
+      name: 'param_to_field',
+      component: () => import('../views/param_to_field.vue')
     },
     {
       path: '/register',

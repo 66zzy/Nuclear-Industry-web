@@ -12,10 +12,10 @@
         <div class="panel-footer"></div>
     </div>
     <div>
-    <router-link to="/param">
+    <router-link to="/param_to_field">
         <img src="../assets/param.jpg" alt="参数设置" id="param"/>
     </router-link>
-    <router-link to="/visual">
+    <router-link to="/field_to_param">
         <img src="../assets/visual.png" alt="可视化" id="visual"/>
     </router-link>
     </div>
