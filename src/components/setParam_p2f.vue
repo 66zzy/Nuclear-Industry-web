@@ -13,7 +13,7 @@
             <el-input v-model="form.T_in"/>
         </el-form-item>
         <el-form-item label="Method:">
-            <el-radio-group v-model="form.method">
+            <el-radio-group v-model="form.mode">
                 <el-radio value="KNN">KNN</el-radio>
                 <el-radio value="nn">NN</el-radio>
                 <el-radio value="dt">Decision Tree</el-radio>
@@ -34,7 +34,7 @@ const form = ref({
     S_t: '',
     P_w: '',
     T_in: '',
-    method: ''
+    mode: ''
 })
 const onSubmit = async () => {
     const response = await axios.post('/paramstofield', form.value)

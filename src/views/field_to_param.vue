@@ -1,9 +1,8 @@
 <template>
-    <div style="display: flex;">
-        <el-button type="primary" size="large" style="margin-left: 2vw;font-size: medium;">filed1</el-button>
-        <el-button type="primary" size="large" style="margin-left: 2vw;font-size: medium;">filed2</el-button>
-        <el-button type="primary" size="large" style="margin-left: 2vw;font-size: medium;">filed3</el-button>
-    </div>
+    <el-button type="primary" size="large" style="margin-left: 2vw;font-size: medium;" @click="dialogVisible=true">参数设置</el-button>
+    <el-dialog title="参数设置" v-model="dialogVisible">
+        <setParam_f2p/>
+    </el-dialog>
     <div style="display: flex;">
         <graph1/>
         <graph2/>
@@ -15,10 +14,16 @@
 import graph1 from "../components/graph1.vue";
 import graph2 from "../components/graph2.vue";
 import graph3 from "../components/graph3.vue";
+import setParam_f2p from "../components/setParam_f2p.vue";
 export default {
     components: {
-        graph1,graph2,graph3
+        graph1,graph2,graph3,setParam_f2p
     },
+    data(){
+        return{
+            dialogVisible: false
+        }
+    }
 };
 </script>
 

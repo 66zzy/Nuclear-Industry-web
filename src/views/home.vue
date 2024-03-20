@@ -13,10 +13,20 @@
     </div>
     <div>
     <router-link to="/param_to_field">
-        <img src="../assets/param.jpg" alt="参数设置" id="param"/>
+        <div id="param">
+          <h2>param</h2>
+          <h2>to</h2>
+          <h2>field</h2>
+        </div>
+        <!-- <img src="../assets/param.jpg" alt="参数设置" id="param"/> -->
     </router-link>
     <router-link to="/field_to_param">
-        <img src="../assets/visual.png" alt="可视化" id="visual"/>
+        <div id="visual">
+          <h2>field</h2>
+          <h2>to</h2>
+          <h2>param</h2>
+        </div>
+        <!-- <img src="../assets/visual.png" alt="可视化" id="visual"/> -->
     </router-link>
     </div>
     <router-link to="/">
@@ -29,18 +39,24 @@
 #param, #visual{
     position: absolute;
     top: 55vh;
-    width: 35vw;
+    width: 25vw;
     border-radius: 2vw;
+    border: 2px solid #02a6b5;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 #param:hover,#visual:hover{
     transform: scale(1.1);
     box-shadow: 0 1vw 1.2vw rgba(0,0,0,0.5);
 }
 #param{
-    left: 10vw;
+    left: 16vw;
 }
 #visual{
-    right: 10vw;
+    right: 16vw;
 }
 #logout{
     position: absolute;
