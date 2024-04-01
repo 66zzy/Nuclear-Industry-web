@@ -1,9 +1,9 @@
 <template>
-    <div class="panel">
+    <div class="panel" ref="component" :style="{ width: width + 'px', height: height + 'px' }">
         <h2 style="color: white;">二维数据-No.{{ order+1}}</h2>
-        <div class="chart" id="graph2" style="height: 400px;width: 350px;"></div>
-        <div class="panel-footer"></div>
-        <el-input-number v-model="order" :min="0" :max="15" />
+        <div class="chart" id="graph2" :style="{width: width+'px',height: height-100+'px'}"></div>
+        <el-input-number v-model="order" :min="0" :max="15" style="position: relative;bottom: 20px;"/>
+        <div ref="resizer" style="width: 20px; height: 20px;background-color: #02a6b5;position: absolute; right: 0; bottom: 0; cursor: se-resize;"></div>
     </div>
 </template>
 
@@ -16,17 +16,46 @@ export default {
   },
   data() {
     return {
-      order: 1
+      order: 1,
+      width: 350,
+      height: 450,
+      resizing: false,
+      lastX: 0,
+      lastY: 0,
+      chart: null
     };
   },
   mounted() {
     this.renderChart();
-    window.addEventListener('resize', this.handleResize);
+    this.$refs.resizer.addEventListener('mousedown', this.startResize);
+    document.addEventListener('mousemove', this.resize);
+    document.addEventListener('mouseup', this.stopResize);
   },
   updated() {
     this.renderChart();
   },
+  beforeDestroy(){
+    this.$refs.resizer.removeEventListener('mousedown', this.startResize);
+    document.removeEventListener('mousemove', this.resize);
+    document.removeEventListener('mouseup', this.stopResize);
+  },
   methods: {
+    startResize(event) {
+      this.resizing = true;
+      this.lastX = event.clientX;
+      this.lastY = event.clientY;
+    },
+    resize(event) {
+      if (!this.resizing) return;
+      this.width += event.clientX - this.lastX;
+      this.height += event.clientY - this.lastY;
+      this.lastX = event.clientX;
+      this.lastY = event.clientY;
+      this.chart.resize();
+    },
+    stopResize() {
+      this.resizing = false;
+    },
     generateData() {
       let data = [];
       let rowData = this.data;
@@ -46,7 +75,7 @@ export default {
         renderer: 'canvas',
         useDirtyRect: false
       });
-
+      this.chart=myChart;
       let option = {
   xAxis: {
     type: 'category',
@@ -88,7 +117,9 @@ export default {
         color: [
           '#ffffff', '#0000ff', '#00ffff', '#00ff00', '#ffff00', '#ff0000'
         ]
-      }
+      },
+    right: 0,
+    top: 0
   },
   series: [
     {
@@ -113,13 +144,7 @@ export default {
         myChart.setOption(option);
       }
     },
-    handleResize() {
-      this.myChart.resize();
-    }
   },
-  beforeDestroy() {
-    window.removeEventListener('resize', this.handleResize);
-  }
 };
 </script>
 

@@ -2,7 +2,6 @@
     <div class="panel">
         <h2 style="color: white;">功率水平</h2>
         <div class="chart" style="height: 400px;width:400px;" ref="chart"></div>
-        <div class="panel-footer"></div>
     </div>
 </template>
 

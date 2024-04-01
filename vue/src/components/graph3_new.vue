@@ -1,82 +1,155 @@
 <template>
-  <div class="panel">
+  <div class="panel" ref="component" :style="{ width: width + 'px', height: height + 'px' }">
       <h2 style="color: white;">三维数据</h2>
-      <div style="display: flex;height: 10px;justify-content: space-evenly;">
+      <div style="display: flex;height: 15px;justify-content: space-evenly;">
         <div style="display:flex;width: 120px;padding-left: 2px;">
           <p style="color: white;font-size:25px;padding: 0;position: relative;top:-45px">x: </p>
-          <el-slider v-model="boxWidth" max="200"/>
+          <el-slider v-model="boxWidth" :min="100" :max="500"/>
         </div>    
         <div style="display:flex;width: 120px;padding-left: 2px;">
           <p style="color: white;font-size:25px;padding: 0;position: relative;top:-45px">y:</p>
-          <el-slider v-model="boxDepth" max="200"/>
+          <el-slider v-model="boxDepth" :min="100" :max="500"/>
         </div>    
         <div style="display:flex;width: 120px;padding-left: 2px;">
           <p style="color: white;font-size:25px;padding: 0;position: relative;top:-45px">z:</p>
-          <el-slider v-model="boxHeight" max="200"/>
-        </div>     
-      </div>
-      <div class="chart" ref="chart" style="width: 500px;height: 500px;padding-bottom: 10px;"></div>
-      <div class="panel-footer"></div>
+          <el-slider v-model="boxHeight" :min="100" :max="500"/>
+        </div>  
+      </div>  
+      <div class="chart" ref="chart" :style="{width: width+'px',height: height-100+'px'}"></div>
+      <div ref="resizer" style="width: 20px; height: 20px;background-color: #02a6b5;position: absolute; right: 0; bottom: 0; cursor: se-resize;"></div>
   </div>
 </template>
 
 <script>
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-
+import * as echarts from 'echarts';
+import 'echarts-gl'
 export default {
   props: {
     data: Array,
   },
+  data(){
+    return {
+      boxWidth: 100,
+      boxDepth: 100,
+      boxHeight: 100,
+      width: 400,
+      height: 500,
+      left: 0,
+      top: 0,
+      resizing: false,
+      lastX: 0,
+      lastY: 0,
+      chart: null
+    }
+  },
   mounted() {
     this.drawPlot();
+    this.$refs.resizer.addEventListener('mousedown', this.startResize);
+    document.addEventListener('mousemove', this.resize);
+    document.addEventListener('mouseup', this.stopResize);
   },
   updated() {
     this.drawPlot();
   },
+  beforeDestroy() {
+    this.$refs.resizer.removeEventListener('mousedown', this.startResize);
+    document.removeEventListener('mousemove', this.resize);
+    document.removeEventListener('mouseup', this.stopResize);
+  },
   methods: {
+    startResize(event) {
+      this.resizing = true;
+      this.lastX = event.clientX;
+      this.lastY = event.clientY;
+    },
+    resize(event) {
+      if (!this.resizing) return;
+      this.width += event.clientX - this.lastX;
+      this.height += event.clientY - this.lastY;
+      this.lastX = event.clientX;
+      this.lastY = event.clientY;
+      this.chart.resize();
+    },
+    stopResize() {
+      this.resizing = false;
+    },
     drawPlot() {
-      const data = this.data;
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(75,1, 0.1, 1000);
-      const renderer = new THREE.WebGLRenderer();
-      renderer.setSize(500, 500);
-      this.$refs.chart.appendChild(renderer.domElement);
-      // 创建一个长度为10的坐标轴助手
-      const axesHelper = new THREE.AxesHelper(10);
-      // 将坐标轴助手添加到场景中
-      scene.add(axesHelper);
-
-      const controls = new OrbitControls(camera, renderer.domElement);
-      controls.target.set(0, 0, 0);
-      controls.update();
-
-      const geometry = new THREE.BoxGeometry(1, 1, 1);
-
+      const data=this.data;
+      const x_data = [];
+      const y_data = [];
+      const z_data = [];
+      const value_data = [];
+      console.log(data);
+      // 将三维数组转换为 x, y, z 坐标
       for (let i = 0; i < data.length; i++) {
         for (let j = 0; j < data[i].length; j++) {
           for (let k = 0; k < data[i][j].length; k++) {
             if (data[i][j][k] === 0) {
               continue;
             }
-            const color = new THREE.Color(`hsl(${data[i][j][k] * 360}, 100%, 50%)`);
-            const material = new THREE.MeshBasicMaterial({color: color});
-            const cube = new THREE.Mesh(geometry, material);
-            cube.position.set(i, j, k);
-            scene.add(cube);
+            x_data.push(i);
+            y_data.push(j);
+            z_data.push(k);
+            value_data.push(data[i][j][k]);
           }
         }
       }
 
-      camera.position.z = 5;
+      const chart = echarts.init(this.$refs.chart);
+      this.chart = chart;
+      chart.setOption({
+          backgroundColor: 'rgba(0,0,0,0)',
+          tooltip: {
+              axisPointer: {lineStyle: {color: 'white'}},
+          },
+          xAxis3D: {
+              axisLine: {lineStyle: {color: 'white'}},
+              axisLabel: {color: 'white',fontWeight: 'bold',fontSize: 18}
+          },
+          yAxis3D: {
+              axisLine: {lineStyle: {color: 'white'}},
+              axisLabel: {color: 'white',fontWeight: 'bold',fontSize: 18}
+          },
+          zAxis3D: {
+              axisLine: {lineStyle: {color: 'white'}},
+              axisLabel: {color: 'white',fontWeight: 'bold',fontSize: 18}
+          },
+          grid3D: {
+              axisPointer: {lineStyle: {color: 'white'}},
+              boxWidth: this.boxWidth,
+              boxHeight: this.boxHeight,
+              boxDepth: this.boxDepth,
+          },
+          series: [{
+          type: 'scatter3D',
+          data: x_data.map((x, idx) => [x, y_data[idx], z_data[idx], value_data[idx]]),
+          symbol:'rect',
+          symbolSize: 12,
+          itemStyle: {
+            opacity: 1
+          }
+          }],
+          visualMap: {
+              dimension: 3,
+              min: 0,
+              max: 2,
+              calculable: true,
+              realtime: false,
+              inRange: {
+                  color: [
+                  '#ffffff', '#0000ff', '#00ffff', '#00ff00', '#ffff00', '#ff0000'
+                  ]
+              },
+              right: 0,
+              top: 0
+          }
+      });
 
-      const animate = function () {
-        requestAnimationFrame(animate);
-        controls.update();
-        renderer.render(scene, camera);
-      };
-
-      animate();
+      // 添加点击事件监听器
+      chart.on('click', params => {
+        const zValue = params.value[2];
+        this.$emit('zValueClicked', zValue);
+      });
     }
   }
 };

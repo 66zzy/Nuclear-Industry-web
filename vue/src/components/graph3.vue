@@ -1,7 +1,7 @@
 <template>
     <div class="panel">
         <h2 style="color: white;">三维数据</h2>
-        <div style="display: flex;height: 10px;justify-content: space-evenly;">
+        <div style="display: flex;height: 15px;justify-content: space-evenly;">
           <div style="display:flex;width: 120px;padding-left: 2px;">
             <p style="color: white;font-size:25px;padding: 0;position: relative;top:-45px">x: </p>
             <el-slider v-model="boxWidth" :min="100" :max="500"/>
@@ -16,7 +16,6 @@
           </div>     
         </div>  
         <div class="chart" ref="chart" style="width: 400px;height: 400px;padding-bottom: 10px;"></div>
-        <div class="panel-footer"></div>
     </div>
   </template>
   
@@ -111,7 +110,9 @@ import 'echarts-gl'
                     color: [
                     '#ffffff', '#0000ff', '#00ffff', '#00ff00', '#ffff00', '#ff0000'
                     ]
-                }
+                },
+                right: 0,
+                top: 0
             }
         });
   

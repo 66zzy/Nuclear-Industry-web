@@ -3,13 +3,11 @@
     <el-dialog title="参数设置" v-model="dialogVisible" style="border-radius: 20px;">
         <setParam_f2p @setParam="setParam"/>
     </el-dialog>
-    <div style="display: flex;">
+    <div style="display: flex;align-items: flex-start;">
         <graph3 @zValueClicked="zValueClicked" :data="hist"/>
         <graph1 :Mu_predict="Mu_predict"/>
-        <div style="display: flex;">
         <graph2_choose :data="hist"/>
         <graph2 :data="hist" :order="order"/>
-        </div>
     </div>
 </template>
   
@@ -17,7 +15,7 @@
 import graph2_choose from "../components/graph2_choose.vue";
 import graph1 from "../components/graph1.vue";
 import graph2 from "../components/graph2.vue";
-import graph3 from "../components/graph3.vue";
+import graph3 from "../components/graph3_new.vue";
 import setParam_f2p from "../components/setParam_f2p.vue";
 export default {
     components: {

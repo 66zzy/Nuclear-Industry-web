@@ -1,8 +1,8 @@
 <template>
-    <div class="panel">
+    <div class="panel" :style="{ width: width + 'px', height: height + 'px' }">
         <h2 style="color: white;">一维数据</h2>
-        <div class="chart" id="graph1" style="height: 400px;width:400px ;"></div>
-        <!-- <div class="panel-footer"></div> -->
+        <div class="chart" id="graph1" :style="{width: width+'px',height: height-100+'px'}"></div>
+        <div ref="resizer" style="width: 20px; height: 20px;background-color: #02a6b5;position: absolute; right: 0; bottom: 0; cursor: se-resize;"></div>
     </div>
 </template>
 
@@ -13,6 +13,21 @@ export default {
   props: {
     Mu_predict: Array
   },
+  data() {
+    return {
+      width: 350,
+      height: 450,
+      resizing: false,
+      lastX: 0,
+      lastY: 0,
+      chart: null
+    };
+  },
+  mounted() {
+    this.$refs.resizer.addEventListener('mousedown', this.startResize);
+    document.addEventListener('mousemove', this.resize);
+    document.addEventListener('mouseup', this.stopResize);
+  },
   updated() {
     // 获取一个具有指定 ID 的 DOM 元素
     const dom = document.getElementById('graph1');
@@ -22,6 +37,7 @@ export default {
       renderer: 'canvas',
       useDirtyRect: false
     });
+    this.chart=myChart;
 
     // 创建一个空对象 app（这个对象可能在其他地方使用）
     const app = {};
@@ -98,16 +114,33 @@ export default {
         }
       ]
     };
-
     // 如果 option 存在且类型为对象，则将配置项应用到图表上
     if (option && typeof option === 'object') {
       myChart.setOption(option);
     }
-
-    // 监听窗口的 resize 事件，并在事件触发时调用 myChart.resize() 方法重新调整图表尺寸
-    window.addEventListener('resize', function() {
-      myChart.resize();
-    });
+  },
+  beforeDestroy() {
+    this.$refs.resizer.removeEventListener('mousedown', this.startResize);
+    document.removeEventListener('mousemove', this.resize);
+    document.removeEventListener('mouseup', this.stopResize);
+  },
+  methods: {
+    startResize(event) {
+      this.resizing = true;
+      this.lastX = event.clientX;
+      this.lastY = event.clientY;
+    },
+    resize(event) {
+      if (!this.resizing) return;
+      this.width += event.clientX - this.lastX;
+      this.height += event.clientY - this.lastY;
+      this.lastX = event.clientX;
+      this.lastY = event.clientY;
+      this.chart.resize();
+    },
+    stopResize() {
+      this.resizing = false;
+    }
   }
 };
 </script>

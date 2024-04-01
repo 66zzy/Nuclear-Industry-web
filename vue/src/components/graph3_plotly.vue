@@ -2,7 +2,6 @@
     <div class="panel" style="background-color: #4B4A54">
         <h2 style="color: white;">三维数据</h2>
         <div class="chart" id="myDiv" style="height:500px;width: 500px;"></div>
-        <div class="panel-footer"></div>
     </div>
 </template>
 
