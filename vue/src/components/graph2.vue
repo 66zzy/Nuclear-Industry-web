@@ -2,7 +2,7 @@
     <div class="panel" :style="{ width: width + 'px', height: height + 'px' }">
         <h2 style="color: white;">二维数据-No.{{ order+1 }}</h2>
         <div class="chart" id="graph2_new" :style="{height: height-100+'px',width: width+'px'}"></div>
-        <div ref="resizer" style="width: 20px; height: 20px;background-color: #02a6b5;position: absolute; right: 0; bottom: 0; cursor: se-resize;"></div>
+        <!-- <div ref="resizer" style="width: 20px; height: 20px;background-color: #02a6b5;position: absolute; right: 0; bottom: 0; cursor: se-resize;"></div> -->
     </div>
 </template>
 
@@ -12,12 +12,12 @@ import * as echarts from 'echarts';
 export default {
   props: {
     data: Array,
-    order: Number
+    order: Number,
+    width: Number,
+    height: Number
   },
   data() {
     return {
-      width: 350,
-      height: 450,
       resizing: false,
       lastX: 0,
       lastY: 0,
@@ -26,35 +26,13 @@ export default {
   },
   mounted() {
     this.renderChart();
-    this.$refs.resizer.addEventListener('mousedown', this.startResize);
-    document.addEventListener('mousemove', this.resize);
-    document.addEventListener('mouseup', this.stopResize);
+    this.chart.resize();
   },
   updated() {
     this.renderChart();
-  },
-  beforeDestroy(){
-    this.$refs.resizer.removeEventListener('mousedown', this.startResize);
-    document.removeEventListener('mousemove', this.resize);
-    document.removeEventListener('mouseup', this.stopResize);
+    this.chart.resize();
   },
   methods: {
-    startResize(event) {
-      this.resizing = true;
-      this.lastX = event.clientX;
-      this.lastY = event.clientY;
-    },
-    resize(event) {
-      if (!this.resizing) return;
-      this.width += event.clientX - this.lastX;
-      this.height += event.clientY - this.lastY;
-      this.lastX = event.clientX;
-      this.lastY = event.clientY;
-      this.chart.resize();
-    },
-    stopResize() {
-      this.resizing = false;
-    },
     generateData() {
       let data = [];
       let rowData = this.data;

@@ -16,7 +16,7 @@
         </div>  
       </div>  
       <div class="chart" ref="chart" :style="{width: width+'px',height: height-100+'px'}"></div>
-      <div ref="resizer" style="width: 20px; height: 20px;background-color: #02a6b5;position: absolute; right: 0; bottom: 0; cursor: se-resize;"></div>
+      <!-- <div ref="resizer" style="width: 20px; height: 20px;background-color: #02a6b5;position: absolute; right: 0; bottom: 0; cursor: se-resize;"></div> -->
   </div>
 </template>
 
@@ -26,53 +26,26 @@ import 'echarts-gl'
 export default {
   props: {
     data: Array,
+    width: Number,
+    height: Number
   },
   data(){
     return {
       boxWidth: 100,
       boxDepth: 100,
       boxHeight: 100,
-      width: 400,
-      height: 500,
-      left: 0,
-      top: 0,
-      resizing: false,
-      lastX: 0,
-      lastY: 0,
-      chart: null
+      chart: null,
     }
   },
   mounted() {
     this.drawPlot();
-    this.$refs.resizer.addEventListener('mousedown', this.startResize);
-    document.addEventListener('mousemove', this.resize);
-    document.addEventListener('mouseup', this.stopResize);
+    this.chart.resize();
   },
   updated() {
     this.drawPlot();
-  },
-  beforeDestroy() {
-    this.$refs.resizer.removeEventListener('mousedown', this.startResize);
-    document.removeEventListener('mousemove', this.resize);
-    document.removeEventListener('mouseup', this.stopResize);
+    this.chart.resize();
   },
   methods: {
-    startResize(event) {
-      this.resizing = true;
-      this.lastX = event.clientX;
-      this.lastY = event.clientY;
-    },
-    resize(event) {
-      if (!this.resizing) return;
-      this.width += event.clientX - this.lastX;
-      this.height += event.clientY - this.lastY;
-      this.lastX = event.clientX;
-      this.lastY = event.clientY;
-      this.chart.resize();
-    },
-    stopResize() {
-      this.resizing = false;
-    },
     drawPlot() {
       const data=this.data;
       const x_data = [];

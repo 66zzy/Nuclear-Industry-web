@@ -2,7 +2,7 @@
     <div class="panel" :style="{ width: width + 'px', height: height + 'px' }">
         <h2 style="color: white;">一维数据</h2>
         <div class="chart" id="graph1" :style="{width: width+'px',height: height-100+'px'}"></div>
-        <div ref="resizer" style="width: 20px; height: 20px;background-color: #02a6b5;position: absolute; right: 0; bottom: 0; cursor: se-resize;"></div>
+        <!-- <div ref="resizer" style="width: 20px; height: 20px;background-color: #02a6b5;position: absolute; right: 0; bottom: 0; cursor: se-resize;"></div> -->
     </div>
 </template>
 
@@ -11,12 +11,12 @@ import * as echarts from 'echarts';
 
 export default {
   props: {
-    Mu_predict: Array
+    Mu_predict: Array,
+    width: Number,
+    height: Number
   },
   data() {
     return {
-      width: 350,
-      height: 450,
       resizing: false,
       lastX: 0,
       lastY: 0,
@@ -24,12 +24,16 @@ export default {
     };
   },
   mounted() {
-    this.$refs.resizer.addEventListener('mousedown', this.startResize);
-    document.addEventListener('mousemove', this.resize);
-    document.addEventListener('mouseup', this.stopResize);
+    this.renderChart();
+    this.chart.resize();
   },
   updated() {
-    // 获取一个具有指定 ID 的 DOM 元素
+    this.renderChart();
+    this.chart.resize();
+  },
+  methods:{
+    renderChart(){
+          // 获取一个具有指定 ID 的 DOM 元素
     const dom = document.getElementById('graph1');
 
     // 初始化 ECharts 实例，并将其绑定到上面获取的 DOM 元素上
@@ -118,30 +122,8 @@ export default {
     if (option && typeof option === 'object') {
       myChart.setOption(option);
     }
-  },
-  beforeDestroy() {
-    this.$refs.resizer.removeEventListener('mousedown', this.startResize);
-    document.removeEventListener('mousemove', this.resize);
-    document.removeEventListener('mouseup', this.stopResize);
-  },
-  methods: {
-    startResize(event) {
-      this.resizing = true;
-      this.lastX = event.clientX;
-      this.lastY = event.clientY;
-    },
-    resize(event) {
-      if (!this.resizing) return;
-      this.width += event.clientX - this.lastX;
-      this.height += event.clientY - this.lastY;
-      this.lastX = event.clientX;
-      this.lastY = event.clientY;
-      this.chart.resize();
-    },
-    stopResize() {
-      this.resizing = false;
     }
-  }
+  },
 };
 </script>
 
