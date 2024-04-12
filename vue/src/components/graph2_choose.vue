@@ -1,9 +1,8 @@
 <template>
     <div class="panel" ref="component" :style="{ width: width + 'px', height: height + 'px' }">
-        <h2 style="color: white;">二维数据-No.{{ order+1}}</h2>
-        <div class="chart" id="graph2" :style="{width: width+'px',height: height-100+'px'}"></div>
-        <el-input-number v-model="order" :min="0" :max="15" style="position: relative;bottom: 20px;"/>
-        <!-- <div ref="resizer" style="width: 20px; height: 20px;background-color: #02a6b5;position: absolute; right: 0; bottom: 0; cursor: se-resize;"></div> -->
+        <h2 class="title">二维数据-No.{{ order+1}}</h2>
+        <div class="chart" id="graph2" :style="{width: width+'px',height: height+'px'}"></div>
+        <el-input-number v-model="order" :min="0" :max="15" style="position: relative;bottom: 50px;"/>
     </div>
 </template>
 
@@ -126,4 +125,4 @@ export default {
 };
 </script>
 
-<style src="/Users/12031/Documents/GitHub/Nuclear-Industry-web/vue/src/components/style.css"></style>
+<style src="/src/components/style.css"></style>

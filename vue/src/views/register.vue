@@ -20,7 +20,7 @@
             <el-button type="primary" size="large" style="margin-left: 2vw;font-size: medium;">register</el-button>
         </router-link>
         <div id="register-link">
-            Already have an account? <a href="/">Log in</a>
+            Already have an account? <a href="/login">Log in</a>
         </div>
     </div>
 </template>

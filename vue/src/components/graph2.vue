@@ -1,7 +1,7 @@
 <template>
     <div class="panel" :style="{ width: width + 'px', height: height + 'px' }">
-        <h2 style="color: white;">二维数据-No.{{ order+1 }}</h2>
-        <div class="chart" id="graph2_new" :style="{height: height-100+'px',width: width+'px'}"></div>
+        <h2 class="title">二维数据-No.{{ order+1 }}</h2>
+        <div class="chart" id="graph2_new" :style="{height: height+'px',width: width+'px'}"></div>
         <!-- <div ref="resizer" style="width: 20px; height: 20px;background-color: #02a6b5;position: absolute; right: 0; bottom: 0; cursor: se-resize;"></div> -->
     </div>
 </template>
@@ -125,4 +125,4 @@ export default {
 };
 </script>
 
-<style src="/Users/12031/Documents/GitHub/Nuclear-Industry-web/vue/src/components/style.css"></style>
+<style src="/src/components/style.css"></style>

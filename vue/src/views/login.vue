@@ -10,7 +10,7 @@
             <label for="password">Password</label>
             <input type="password" id="password" name="password" required>
         </div>
-        <router-link to="/home">
+        <router-link to="/">
             <el-button type="primary" size="large" style="margin-left: 2vw;font-size: medium;">login</el-button>
         </router-link>
         <div id="register-link">

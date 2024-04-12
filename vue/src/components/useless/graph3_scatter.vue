@@ -96,6 +96,7 @@ export default {
           series: [{
           type: 'scatter3D',
           data: x_data.map((x, idx) => [x, y_data[idx], z_data[idx], value_data[idx]]),
+          tooltip: { show: false },
           symbol:'rect',
           symbolSize: 12,
           itemStyle: {
@@ -104,8 +105,8 @@ export default {
           }],
           visualMap: {
               dimension: 3,
-              min: 0,
-              max: 2,
+              min: value_data.length > 0 ? Math.min(...value_data) : 0,
+              max: value_data.length > 0 ? Math.max(...value_data) : 2,
               calculable: true,
               realtime: false,
               inRange: {

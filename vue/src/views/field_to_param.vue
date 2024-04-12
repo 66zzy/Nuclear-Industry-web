@@ -7,22 +7,27 @@
         <div class="grid-stack-item" gs-id="graph3" gs-x="0" gs-y="0" :gs-w="width[0]" :gs-h="height[0]">
             <div class="grid-stack-item-content" style="height: 50px;">
             </div>
-            <graph3 @zValueClicked="zValueClicked" :data="hist" :width="width[0]*80+80" :height="height[0]*80"/>
+            <graph3 @zValueClicked="zValueClicked" :data="hist" :width="width[0]*120" :height="height[0]*80-40"/>
         </div>
         <div class="grid-stack-item" gs-id="graph1" gs-x="4" gs-y="0" :gs-w="width[1]" :gs-h="height[1]">
             <div class="grid-stack-item-content" style="height: 50px;">
             </div>
-            <graph1 :Mu_predict="Mu_predict" :width="width[1]*80+80" :height="height[1]*80"/>
+            <graph1 :Mu_predict="Mu_predict" :width="width[1]*120" :height="height[1]*80-40"/>
         </div>
         <div class="grid-stack-item" gs-id="graph2_choose" gs-x="0" gs-y="6" :gs-w="width[2]" :gs-h="height[2]">
             <div class="grid-stack-item-content" style="height: 50px;">
             </div>
-            <graph2_choose :data="hist" :width="width[2]*80+80" :height="height[2]*80"/>
+            <graph2_choose :data="hist" :width="width[2]*120" :height="height[2]*80-40"/>
         </div>
         <div class="grid-stack-item" gs-id="graph2" gs-x="4" gs-y="6" :gs-w="width[3]" :gs-h="height[3]">
             <div class="grid-stack-item-content" style="height: 50px;">
             </div>
-            <graph2 :data="hist" :order="order" :width="width[3]*80+80" :height="height[3]*80"/>
+            <graph2 :data="hist" :order="order" :width="width[3]*120" :height="height[3]*80-40"/>
+        </div>
+        <div class="grid-stack-item" gs-id="graph3_1-4" gs-x="7" gs-y="6" :gs-w="width[4]" :gs-h="height[4]">
+            <div class="grid-stack-item-content" style="height: 50px;">
+            </div>
+            <graph3_14 @zValueClicked="zValueClicked" :data="hist" :width="width[4]*120" :height="height[4]*80-40"/>
         </div>
     </div>
 </template>
@@ -31,13 +36,14 @@
 import graph2_choose from "../components/graph2_choose.vue";
 import graph1 from "../components/graph1.vue";
 import graph2 from "../components/graph2.vue";
-import graph3 from "../components/graph3_new.vue";
+import graph3 from "../components/graph3_bar.vue";
+import graph3_14 from "../components/graph3_14.vue";
 import setParam_f2p from "../components/setParam_f2p.vue";
 import 'gridstack/dist/gridstack.min.css';
 import { GridStack } from 'gridstack';
 export default {
     components: {
-        graph1,graph2,graph3,setParam_f2p,graph2_choose
+        graph1,graph2,graph3,setParam_f2p,graph2_choose,graph3_14
     },
     data(){
         return{
@@ -45,14 +51,14 @@ export default {
             dialogVisible: false,
             Mu_predict: [],
             hist: [[]],
-            width: [4,4,4,4],
-            height: [6,6,6,6]
+            width: [4,3,4,4,4],
+            height: [6,6,6,6,6],
         }
     },
     mounted(){
         var options = {
             cellHeight: 80,
-            verticalMargin: 10,
+            column: 12,
         };
         var grid = GridStack.init(options);
         grid.on('change', (event, items) => {
@@ -77,6 +83,11 @@ export default {
                 this.width[3] = item.w;
                 this.height[3] = item.h;
                 };
+                if (item.id === 'graph3_1-4') {
+                // 更新graph3_1-4的宽度
+                this.width[4] = item.w;
+                this.height[4] = item.h;
+                };
             });
         });
     },
@@ -97,7 +108,8 @@ export default {
 <style>
 .grid-stack-item {
     margin: 2vw;
-    border:#02a6b5 solid 1px;
+    border:#02a6b5 solid 5px;
+    box-sizing: border-box;
     border-radius: 20px;
     background-color: #4B4A54;
 }

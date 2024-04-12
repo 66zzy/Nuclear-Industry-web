@@ -10,7 +10,6 @@
         <br>
         可视化系统：通过一维到三维对于核反应堆实时数据的展示，让用户更加直观了解到核反应堆的状况，通过数字化手段监测核反应堆状况。
         </p>
-        <div class="panel-footer"></div>
     </div>
     <div class="param">
         <h2 class="title">参数推断</h2>
@@ -40,9 +39,6 @@
         </div>
         </div>
     </div>
-    <router-link to="/">
-        <img src="../assets/logout.png" alt="退出" id="logout"/>
-    </router-link>
     </div>
 </template>
 

@@ -102,8 +102,8 @@ import 'echarts-gl'
             }],
             visualMap: {
                 dimension: 3,
-                min: 0,
-                max: 2,
+                min: value_data.length > 0 ? Math.min(...value_data) : 0,
+                max: value_data.length > 0 ? Math.max(...value_data) : 2,
                 calculable: true,
                 realtime: false,
                 inRange: {

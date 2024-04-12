@@ -1,7 +1,7 @@
 <template>
     <div class="panel" :style="{ width: width + 'px', height: height + 'px' }">
-        <h2 style="color: white;">一维数据</h2>
-        <div class="chart" id="graph1" :style="{width: width+'px',height: height-100+'px'}"></div>
+        <h2 class="title">一维数据</h2>
+        <div class="chart" id="graph1" :style="{width: width+'px',height: height+'px'}"></div>
         <!-- <div ref="resizer" style="width: 20px; height: 20px;background-color: #02a6b5;position: absolute; right: 0; bottom: 0; cursor: se-resize;"></div> -->
     </div>
 </template>
@@ -43,80 +43,78 @@ export default {
     });
     this.chart=myChart;
 
-    // 创建一个空对象 app（这个对象可能在其他地方使用）
-    const app = {};
-    const data1 = this.Mu_predict.map(item => item[0]);
+/*     const data1 = this.Mu_predict.map(item => item[0]);
     const data2 = this.Mu_predict.map(item => item[1]);
     const data3 = this.Mu_predict.map(item => item[2]);
-    const data4 = this.Mu_predict.map(item => item[3]);
+    const data4 = this.Mu_predict.map(item => item[3]); */
+    let series = [];
+    for (let i = 0; i < 4; i++) {
+      let data = this.Mu_predict.map(item => item[i]);
+      series.push({
+        id: 'μ' + (i + 1),
+        name: 'μ' + (i + 1),
+        type: 'line',
+        data: data,
+        smooth: true,     
+      });
+      series.push({
+        id: 'μ' + (i + 1) + '预测下界',
+        name: 'μ' + (i + 1),
+        type: 'line',
+        data: data.map(() => Math.min(...data)),
+        smooth: true,
+        stack: 'μ' + (i + 1),
+        lineStyle: {
+          opacity: 0
+        },
+        legendHoverLink: false,
+        silent: true,
+        showSymbol: false         
+      });
+      series.push({
+        id: 'μ' + (i + 1) + '预测上界',
+        name: 'μ' + (i + 1),
+        type: 'line',
+        data: data.map(() => Math.max(...data)-Math.min(...data)),
+        smooth: true,
+        stack: 'μ' + (i + 1),
+        areaStyle: {
+          opacity: 0.3
+        },
+        lineStyle: {
+          opacity: 0
+        },
+        legendHoverLink: false,
+        silent: true,
+        showSymbol: false     
+      });
+    }
     // 设置图表的配置项
     const option = {
       xAxis: {
         type: 'category',
         data: Array.from({ length: 500 }, (v, k) => k),
         axisLabel: {
-          textStyle: {
-            color: 'white' // 将 x 轴标签文字颜色设置为白色
-          }
+          textStyle: {color: 'white'}
         },
         axisLine: {
-          lineStyle: {
-            color: 'white' // 将 x 轴线的颜色设置为白色
-          }
+          lineStyle: {color: 'white'}
         }
       },
       yAxis: {
         type: 'value',
         axisLabel: {
-          textStyle: {
-            color: 'white' // 将 y 轴标签文字颜色设置为白色
-          }
+          textStyle: {color: 'white'}
         },
         axisLine: {
-          lineStyle: {
-            color: 'white' // 将 y 轴线的颜色设置为白色
-          }
+          lineStyle: {color: 'white'}
         }
       },
-      textStyle: {
-        color: 'white' // 将其他所有文字元素的颜色设置为白色
-      },
+      textStyle: {color: 'white'},
       legend: {
-        data: ['μ1','μ2','μ3','μ4'], // 图例数据
-        textStyle: {
-          color: 'white' // 将图例文字颜色设置为白色
-        }
+      textStyle: {color: 'white'},
       },
-      series: [
-        {
-        name: 'μ1', // 图例显示的名称
-        data: data1,
-        type: 'line',
-        smooth: true,
-        areaStyle: {} // 将折线图的区域填充
-        },
-        {
-        name: 'μ2', // 图例显示的名称
-        data: data2,
-        type: 'line',
-        smooth: true,
-        areaStyle: {} // 将折线图的区域填充
-        },
-        {
-        name: 'μ3', // 图例显示的名称
-        data: data3,
-        type: 'line',
-        smooth: true,
-        areaStyle: {} // 将折线图的区域填充
-        },
-        {
-        name: 'μ4', // 图例显示的名称
-        data: data4,
-        type: 'line',
-        smooth: true,
-        areaStyle: {} // 将折线图的区域填充
-        }
-      ]
+      series:series
     };
     // 如果 option 存在且类型为对象，则将配置项应用到图表上
     if (option && typeof option === 'object') {
@@ -127,4 +125,4 @@ export default {
 };
 </script>
 
-<style src="/Users/12031/Documents/GitHub/Nuclear-Industry-web/vue/src/components/style.css"></style>
+<style src="/src/components/style.css"></style>
