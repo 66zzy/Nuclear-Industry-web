@@ -1,8 +1,9 @@
 <template>
-    <div class="panel" ref="component" :style="{ width: width + 'px', height: height + 'px' }">
-        <h2 class="title">二维数据-No.{{ order+1}}</h2>
-        <div class="chart" id="graph2" :style="{width: width+'px',height: height+'px'}"></div>
-        <el-input-number v-model="order" :min="0" :max="15" style="position: relative;bottom: 50px;"/>
+    <div class="card" ref="component" :style="{ width: width + 'vw', height: height + 'px' }">
+      <button style="position: absolute;top: 2%;right: 4%;background-color: rgb(0,0,0,0);" @click="exportImage"><img style="width: 25px;height: 25px;" src="../assets/camera.png" alt="导出"></button>
+        <h2 class="title">反应堆截面数据视图-No.{{ order+1}}</h2>
+        <el-input-number v-model="order" :min="0" :max="15" style="position: absolute;left: 4%"/>
+        <div class="chart" id="graph2" :style="{ width: width + 'vw'}" style="height:95%"></div>
     </div>
 </template>
 
@@ -13,7 +14,8 @@ export default {
   props: {
     data: Array,
     width: Number,
-    height: Number
+    height: Number,
+    min_max: Array
   },
   data() {
     return {
@@ -21,12 +23,15 @@ export default {
       resizing: false,
       lastX: 0,
       lastY: 0,
-      chart: null
+      chart: null,
     };
   },
   mounted() {
     this.renderChart();
     this.chart.resize();
+    window.addEventListener('resize', () => {
+      this.chart.resize(); // 当窗口大小改变时，调整图表的大小
+    });
   },
   updated() {
     this.renderChart();
@@ -86,13 +91,13 @@ export default {
     color: 'white' // 将其他所有文字元素的颜色设置为白色
   },
   visualMap: {
-    min: 0,
-    max: 2,
+    min: this.min_max[0],
+    max: this.min_max[1],
     calculable: true,
     realtime: false,
     inRange: {
         color: [
-          '#ffffff', '#0000ff', '#00ffff', '#00ff00', '#ffff00', '#ff0000'
+        '#ffffff', '#0000ff', '#00ffff', '#00ff00', '#ffff00', '#ff0000'
         ]
       },
     right: 0,
@@ -121,6 +126,17 @@ export default {
         myChart.setOption(option);
       }
     },
+    exportImage() {
+        const url = this.chart.getDataURL({
+          type: 'png',
+          pixelRatio: 2,
+          backgroundColor: '#4B4A54'
+        });
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'chart.png';
+        link.click();
+      },
   },
 };
 </script>

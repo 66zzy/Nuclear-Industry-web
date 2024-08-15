@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "serve": "serve dist"
   },
   "dependencies": {
     "axios": "^1.6.8",
@@ -15,6 +16,8 @@
     "element-plus": "^2.6.1",
     "gridstack": "^10.1.2",
     "plotly.js-dist": "^2.30.1",
+    "serve": "^14.2.3",
+    "socket.io-client": "^4.7.5",
     "three": "^0.162.0",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0"

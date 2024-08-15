@@ -1,7 +1,8 @@
 <template>
-    <div class="panel" :style="{ width: width + 'px', height: height + 'px' }">
-        <h2 class="title">一维数据</h2>
-        <div class="chart" id="graph1" :style="{width: width+'px',height: height+'px'}"></div>
+    <div class="card" :style="{ width: width + 'vw', height: height + 'px' }">
+      <button style="position: absolute;top: 2%;right: 4%;background-color: rgb(0,0,0,0);" @click="exportImage"><img style="width: 25px;height: 25px;" src="../assets/camera.png" alt="导出"></button>
+        <h2 class="title">实时参数数据</h2>
+        <div class="chart" id="graph1" :style="{ width: width + 'vw'}" style="height:95%"></div>
     </div>
 </template>
 
@@ -10,7 +11,7 @@ import * as echarts from 'echarts';
 
 export default {
   props: {
-    Mu_predict: Array,
+    mu_predict: Array,
     width: Number,
     height: Number
   },
@@ -25,6 +26,9 @@ export default {
   mounted() {
     this.renderChart();
     this.chart.resize();
+    window.addEventListener('resize', () => {
+      this.chart.resize(); // 当窗口大小改变时，调整图表的大小
+    });
   },
   updated() {
     this.renderChart();
@@ -44,10 +48,10 @@ export default {
 
     // 创建一个空对象 app（这个对象可能在其他地方使用）
     const app = {};
-    const data1 = this.Mu_predict.map(item => item[0]);
-    const data2 = this.Mu_predict.map(item => item[1]);
-    const data3 = this.Mu_predict.map(item => item[2]);
-    const data4 = this.Mu_predict.map(item => item[3]);
+    const data1 = this.mu_predict.map(item => item[0]);
+    const data2 = this.mu_predict.map(item => item[1]);
+    const data3 = this.mu_predict.map(item => item[2]);
+    const data4 = this.mu_predict.map(item => item[3]);
     // 设置图表的配置项
     const option = {
       xAxis: {
@@ -123,7 +127,18 @@ export default {
     if (option && typeof option === 'object') {
       myChart.setOption(option);
     }
-    }
+    },
+    exportImage() {
+        const url = this.chart.getDataURL({
+          type: 'png',
+          pixelRatio: 2,
+          backgroundColor: '#4B4A54'
+        });
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'chart.png';
+        link.click();
+      },
   },
 };
 </script>

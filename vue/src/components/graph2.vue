@@ -1,8 +1,8 @@
 <template>
-    <div class="panel" :style="{ width: width + 'px', height: height + 'px' }">
-        <h2 class="title">二维数据-No.{{ order+1 }}</h2>
-        <div class="chart" id="graph2_new" :style="{height: height+'px',width: width+'px'}"></div>
-        <!-- <div ref="resizer" style="width: 20px; height: 20px;background-color: #02a6b5;position: absolute; right: 0; bottom: 0; cursor: se-resize;"></div> -->
+    <div class="card" :style="{ width: width + 'vw', height: height + 'px' }">
+      <button style="position: absolute;top: 2%;right: 4%;background-color: rgb(0,0,0,0);" @click="exportImage"><img style="width: 25px;height: 25px;" src="../assets/camera.png" alt="导出"></button>
+        <h2 class="title">反应堆截面数据视图-No.{{ order+1 }}</h2>
+        <div class="chart" id="graph2_new" :style="{ width: width + 'vw'}" style="height:95%"></div>
     </div>
 </template>
 
@@ -14,7 +14,8 @@ export default {
     data: Array,
     order: Number,
     width: Number,
-    height: Number
+    height: Number,
+    min_max: Array
   },
   data() {
     return {
@@ -27,6 +28,9 @@ export default {
   mounted() {
     this.renderChart();
     this.chart.resize();
+    window.addEventListener('resize', () => {
+      this.chart.resize(); // 当窗口大小改变时，调整图表的大小
+    });
   },
   updated() {
     this.renderChart();
@@ -86,8 +90,8 @@ export default {
     color: 'white' // 将其他所有文字元素的颜色设置为白色
   },
   visualMap: {
-    min: 0,
-    max: 2,
+    min: this.min_max[0],
+    max: this.min_max[1],
     calculable: true,
     realtime: false,
     inRange: {
@@ -121,6 +125,17 @@ export default {
         myChart.setOption(option);
       }
     },
+    exportImage() {
+        const url = this.chart.getDataURL({
+          type: 'png',
+          pixelRatio: 2,
+          backgroundColor: '#4B4A54'
+        });
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'chart.png';
+        link.click();
+      },
   },
 };
 </script>
